@@ -661,12 +661,6 @@ void Global::InitializeResources(ResourceControl *resources)
                 g_scaleDRA = EventsParser::ParseBoolean(enabled);
             }
 
-            if (strcmp(node->name(), "droneIonDodgeFix") == 0)
-            {
-                auto enabled = node->first_attribute("enabled")->value();
-                g_droneIonDodgeFix = EventsParser::ParseBoolean(enabled);
-            }
-
             if (strcmp(node->name(), "multiShipFix") == 0)
             {
                 auto enabled = node->first_attribute("enabled")->value();

@@ -6,8 +6,6 @@
 #include "Room_Extend.h"
 #include <boost/lexical_cast.hpp>
 
-bool g_droneIonDodgeFix = false;
-
 CustomDamage* CustomDamageManager::currentWeaponDmg = nullptr;
 Projectile* CustomDamageManager::currentProjectile = nullptr;
 
@@ -801,7 +799,7 @@ HOOK_METHOD_PRIORITY(SpaceDrone, CollisionMoving, 9999, (Pointf start, Pointf fi
 
         if (damage.iIonDamage > 0) // if ion damage then stun the drone
         {
-            if (this->powered || g_droneIonDodgeFix)
+            if (this->powered)
             {
                 this->ionStun = damage.iIonDamage * 5;
             }
