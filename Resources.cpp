@@ -655,12 +655,6 @@ void Global::InitializeResources(ResourceControl *resources)
                 customOptions->scaleSlugGel.currentValue = EventsParser::ParseBoolean(enabled);
             }
 
-            if (strcmp(node->name(), "scaleDRA") == 0)
-            {
-                auto enabled = node->first_attribute("enabled")->value();
-                g_scaleDRA = EventsParser::ParseBoolean(enabled);
-            }
-
             if (strcmp(node->name(), "multiShipFix") == 0)
             {
                 auto enabled = node->first_attribute("enabled")->value();

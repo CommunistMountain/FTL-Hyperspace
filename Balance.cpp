@@ -3,7 +3,6 @@
 
 bool g_hackingDroneFix = true;
 bool g_repairDroneRecoveryFix = true;
-bool g_scaleDRA = false;
 bool g_controllableIonDroneFix = false;
 float g_controllableIonDroneFix_Delay = 6.0;
 float g_controllableIonDroneFix_DelayInitial = 6.0;
@@ -26,7 +25,6 @@ HOOK_METHOD(HackingSystem, OnLoop, () -> void)
 }
 
 // Jumping away while a repair drone is active with a repair arm will collect the drone part -- this removes it before the collection
-// Then, set percentage chance for defense/hull repair/shield drones to be removed before collection
 
 HOOK_METHOD(DroneSystem, Jump, () -> void)
 {
@@ -36,7 +34,7 @@ HOOK_METHOD(DroneSystem, Jump, () -> void)
     {
         for (auto drone : drones)
         {
-            // type == 5 is hull repair
+            // type == 5 are SHIP_REPAIR
             if (drone->deployed && drone->type == 5)
             {
                 drone->SetDestroyed(true, false);
@@ -44,64 +42,7 @@ HOOK_METHOD(DroneSystem, Jump, () -> void)
             }
         }
     }
-    if (g_scaleDRA)
-    {
-        for (auto drone : drones)
-        {
-            // type == 0 is defense, type == 7 is shield
-            if (drone->deployed && (drone->type == 0 || drone->type == 5 || drone->type == 7))
-            {
-                double rng = (double)random32() * (1.0 / ((double)2147483647 + 1.0));
-                double augVal = 1.0
-                try
-                {
-                    augVal = (double)GetAugmentationValue("DRONE_RECOVERY")
-                }
-                catch(...)
-                {
-                }
-                if (rng > augVal)
-                {
-                    drone->SetDestroyed(true, false);
-                    drone->deployed = false;
-                }
-            }
-        }
-    }
     super();
-}
-
-// On enemy defeat, set percentage chance for combat drones to be removed before collection
-
-HOOK_METHOD(DroneSystem, ????????, () -> void)
-{
-    LOG_HOOK("HOOK_METHOD -> DroneSystem::???????? -> Begin (Balance.cpp)\n")
-    
-    if (g_scaleDRA)
-    {
-        for (auto drone : drones)
-        {
-            // type == 1 is combat
-            if (drone->deployed && drone->type == 1)
-            {
-                double rng = (double)random32() * (1.0 / ((double)2147483647 + 1.0));
-                double augVal = 1.0
-                try
-                {
-                    augVal = (double)GetAugmentationValue("DRONE_RECOVERY")
-                }
-                catch(...)
-                {
-                }
-                if (rng > augVal)
-                {
-                    drone->SetDestroyed(true, false);
-                    drone->deployed = false;
-                }
-            }
-        }
-    }
-    super(); // TODO check if this is needed for on-enemy-defeat ???
 }
 
 // Attacking a door with the ion boarder would cause it to instantly charge its next ion burst, 
