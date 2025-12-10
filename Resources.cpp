@@ -658,7 +658,8 @@ void Global::InitializeResources(ResourceControl *resources)
             if (strcmp(node->name(), "scaleDRA") == 0)
             {
                 auto enabled = node->first_attribute("enabled")->value();
-                g_scaleDRA = EventsParser::ParseBoolean(enabled);
+                customOptions->scaleDRA.defaultValue = EventsParser::ParseBoolean(enabled);
+                customOptions->scaleDRA.currentValue = EventsParser::ParseBoolean(enabled);
             }
 
             if (strcmp(node->name(), "multiShipFix") == 0)

@@ -3,7 +3,6 @@
 
 bool g_hackingDroneFix = true;
 bool g_repairDroneRecoveryFix = true;
-bool g_scaleDRA = false;
 bool g_controllableIonDroneFix = false;
 float g_controllableIonDroneFix_Delay = 6.0;
 float g_controllableIonDroneFix_DelayInitial = 6.0;
@@ -44,7 +43,7 @@ HOOK_METHOD(DroneSystem, Jump, () -> void)
             }
         }
     }
-    if (g_scaleDRA)
+    if (CustomOptionsManager::GetInstance()->scaleDRA.currentValue)
     {
         for (auto drone : drones)
         {
@@ -77,7 +76,7 @@ HOOK_METHOD(DroneSystem, ????????, () -> void)
 {
     LOG_HOOK("HOOK_METHOD -> DroneSystem::???????? -> Begin (Balance.cpp)\n")
     
-    if (g_scaleDRA)
+    if (CustomOptionsManager::GetInstance()->scaleDRA.currentValue)
     {
         for (auto drone : drones)
         {
