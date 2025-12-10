@@ -1,4 +1,5 @@
 #include "Global.h"
+#include "CustomOptions.h"
 #include <limits>
 
 bool g_hackingDroneFix = true;
@@ -7,6 +8,10 @@ bool g_controllableIonDroneFix = false;
 float g_controllableIonDroneFix_Delay = 6.0;
 float g_controllableIonDroneFix_DelayInitial = 6.0;
 bool g_hackingIonFix = false;
+static bool ScaleDRA()
+{
+    return CustomOptionsManager::GetInstance()->scaleDRA.currentValue;
+}
 
 // hacking drone explodes on depower -- makes you unable to get past defense drones by powering + depowering
 
@@ -43,7 +48,7 @@ HOOK_METHOD(DroneSystem, Jump, () -> void)
             }
         }
     }
-    if (CustomOptionsManager::GetInstance()->scaleDRA.currentValue)
+    if (ScaleDRA())
     {
         for (auto drone : drones)
         {
@@ -51,10 +56,10 @@ HOOK_METHOD(DroneSystem, Jump, () -> void)
             if (drone->deployed && (drone->type == 0 || drone->type == 5 || drone->type == 7))
             {
                 double rng = (double)random32() * (1.0 / ((double)2147483647 + 1.0));
-                double augVal = 1.0
+                double augVal = 1.0;
                 try
                 {
-                    augVal = (double)GetAugmentationValue("DRONE_RECOVERY")
+                    augVal = (double)GetAugmentationValue("DRONE_RECOVERY");
                 }
                 catch(...)
                 {
@@ -76,7 +81,7 @@ HOOK_METHOD(DroneSystem, ????????, () -> void)
 {
     LOG_HOOK("HOOK_METHOD -> DroneSystem::???????? -> Begin (Balance.cpp)\n")
     
-    if (CustomOptionsManager::GetInstance()->scaleDRA.currentValue)
+    if (ScaleDRA())
     {
         for (auto drone : drones)
         {
@@ -84,10 +89,10 @@ HOOK_METHOD(DroneSystem, ????????, () -> void)
             if (drone->deployed && drone->type == 1)
             {
                 double rng = (double)random32() * (1.0 / ((double)2147483647 + 1.0));
-                double augVal = 1.0
+                double augVal = 1.0;
                 try
                 {
-                    augVal = (double)GetAugmentationValue("DRONE_RECOVERY")
+                    augVal = (double)GetAugmentationValue("DRONE_RECOVERY");
                 }
                 catch(...)
                 {
