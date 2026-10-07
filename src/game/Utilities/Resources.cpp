@@ -615,6 +615,13 @@ void Global::InitializeResources(ResourceControl *resources)
                 customOptions->showScrapCollectorScrap.currentValue = EventsParser::ParseBoolean(enabled);
             }
 
+            if (strcmp(node->name(), "bossLevelFleetDelay") == 0)
+            {
+                auto enabled = node->first_attribute("enabled")->value();
+                customOptions->bossLevelFleetDelay.defaultValue = EventsParser::ParseBoolean(enabled);
+                customOptions->bossLevelFleetDelay.currentValue = EventsParser::ParseBoolean(enabled);
+            }
+
             if (strcmp(node->name(), "preIgniteChargers") == 0)
             {
                 auto enabled = node->first_attribute("enabled")->value();

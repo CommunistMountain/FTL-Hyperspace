@@ -3,6 +3,11 @@
 #include "CustomOptions.h"
 #include <boost/algorithm/string.hpp>
 
+static bool BossLevelFleetDelay()
+{
+    return CustomOptionsManager::GetInstance()->bossLevelFleetDelay.currentValue;;
+}
+
 HOOK_METHOD_PRIORITY(StarMap, LoadGame, 9999, (int fd) -> Location*)
 {
     LOG_HOOK("HOOK_METHOD_PRIORITY -> StarMap::LoadGame -> Begin (StarMap.cpp)\n")
@@ -433,9 +438,24 @@ HOOK_METHOD_PRIORITY(StarMap, GenerateMap, 9999, (bool bTutorial, bool useOldSee
                     //Overtake sector
                     dangerZone.x = 60;
                     dangerZone.y = 200;
-                    //Give fleet control to one random location
-                    Location* randomLocation = locations[random32() % locations.size()];
-                    if (!randomLocation->beacon) randomLocation->fleetChanging = true;
+                    //Give fleet control to 1 random location; if option is enabled, 0 or 2 depending on pursuitDelay
+                    int numFleetTakeovers = 1;
+                    if (BossLevelFleetDelay())
+                    {
+                        if (pursuitDelay < 0)
+                        {
+                            numFleetTakeovers = 0;
+                        }
+                        else if (pursuitDelay > 0)
+                        {
+                            numFleetTakeovers = 2;
+                        }
+                    }
+                    for (int i = 0; i < numFleetTakeovers; i++)
+                    {
+                        Location* randomLocation = locations[random32() % locations.size()];
+                        if (!randomLocation->beacon) randomLocation->fleetChanging = true;
+                    }
                     do
                     {
                         //Generate boss start location and boss path

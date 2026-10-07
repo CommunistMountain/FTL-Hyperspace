@@ -74,6 +74,8 @@ public:
 
     Setting<bool> showScrapCollectorScrap;
 
+    Setting<bool> bossLevelFleetDelay;
+
     Setting<bool> preIgniteChargers;
 
     Setting<bool> altLockedMiniships;
